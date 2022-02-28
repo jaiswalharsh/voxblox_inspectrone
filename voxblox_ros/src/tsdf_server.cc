@@ -126,10 +126,11 @@ TsdfServer::TsdfServer(const ros::NodeHandle& nh,
   publish_tsdf_map_srv_ = nh_private_.advertiseService(
       "publish_map", &TsdfServer::publishTsdfMapCallback, this);
 
+  // ROS param to start/stop map and mesh publishing
   continue_mapping_ = false;
   nh_private_.param("continue_mapping", continue_mapping_, 
                     continue_mapping_);
-
+  // Flag to resubscribe to pointcloud after it has been stopped by user
   points_resub_needed = false;
   // nh_private_.param("points_resub_needed", points_resub_needed, 
   //                   points_resub_needed);
@@ -467,14 +468,17 @@ void TsdfServer::publishMap(bool reset_remote_map) {
   }
 
   nh_private_.getParam("continue_mapping",continue_mapping_);
+  // If stop mapping is requested
   if (!continue_mapping_) {
-    ROS_INFO("Not publishing map. SHUTTING DOWN pointcloud sub. continue_mapping is FALSE.");
+    ROS_INFO("Not publishing map. continue_mapping is FALSE.");
     pointcloud_sub_.shutdown();
     points_resub_needed = true;
     return;
   }
+  // if continue_mapping is true
   else
   {
+    // if mapping was stopped previously, resubscribe to pointclouds
     if (points_resub_needed)
     {
       pointcloud_sub_ = nh_.subscribe("pointcloud", pointcloud_queue_size_,
@@ -562,7 +566,7 @@ void TsdfServer::updateMesh() {
   }
   else
   {
-    ROS_INFO("Not Updating mesh. SHUTTING DOWN pointcloud sub continue_mapping is FALSE.");
+    ROS_INFO("Not Updating mesh. continue_mapping is FALSE.");
     pointcloud_sub_.shutdown();
     points_resub_needed = true;
   }
