@@ -9,10 +9,10 @@
   <node name="player" pkg="rosbag" type="play" output="screen" args="-r 1.0 --clock $(arg bag_file)" if="$(arg play_bag)"/>
 
   <node name="pcl_throttle" pkg="topic_tools" type="drop" 
-	args=" /mynteye/points/data_raw 1 2 /mynteye/points/data_raw_throttled"/>
+	args=" /mynteye/points/downsampled_xyz 1 2 /mynteye/points/downsampled_xyz_throttled"/>
 
   <node name="voxblox_node" pkg="voxblox_ros" type="tsdf_server" output="screen" args="-alsologtostderr" clear_params="true">
-    <remap from="pointcloud" to="/mynteye/points/data_raw" />
+    <remap from="pointcloud" to="/mynteye/points/downsampled_xyz_throttled" />
     <param name="tsdf_voxel_size" value="$(arg voxel_size)" />
     <param name="tsdf_voxels_per_side" value="16" />
     <param name="voxel_carving_enabled" value="true" />
@@ -29,7 +29,7 @@
 
     <param name="enable_icp" value="true" />
     <param name="icp_refine_roll_pitch" value="false" />
- 	  <param name="world_frame" value="mynteye_link_frame" />
+ 	  <param name="world_frame" value="camera_odom_frame" />
     <!-- <param name="truncation_distance" value="2.5" /> -->
 
   </node>

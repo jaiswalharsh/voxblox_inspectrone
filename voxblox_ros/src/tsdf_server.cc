@@ -126,7 +126,7 @@ TsdfServer::TsdfServer(const ros::NodeHandle& nh,
   publish_tsdf_map_srv_ = nh_private_.advertiseService(
       "publish_map", &TsdfServer::publishTsdfMapCallback, this);
 
-  continue_mapping_ = true;
+  continue_mapping_ = false;
   nh_private_.param("continue_mapping", continue_mapping_, 
                     continue_mapping_);
 
