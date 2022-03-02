@@ -27,12 +27,12 @@
     <param name="use_const_weight" value="false" />
     <param name="allow_clear" value="true" />
     <param name="verbose" value="true" />
-    
+    <param name="max_block_distance_from_body" value="5.0" /> 
     <!-- <param name="continue_mapping" value="true" /> -->
 
     <param name="enable_icp" value="true" />
-    <param name="icp_refine_roll_pitch" value="false" />
- 	  <param name="world_frame" value="camera_odom_frame" />
+    <param name="icp_refine_roll_pitch" value="true" />
+    <param name="world_frame" value="world" />
     <!-- <param name="truncation_distance" value="2.5" /> -->
 
   </node>
